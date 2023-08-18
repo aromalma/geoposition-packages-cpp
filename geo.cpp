@@ -5,7 +5,7 @@
 // namespace py=pybind11::literals;
 namespace py =pybind11;
 using namespace std;
-void spilt(std::string &, double *,double*);
+void split(std::string &, double *,double*);
 py::tuple geo_split(std::string & f){
     double lt,ln;
     split(f,&lt,&ln);
