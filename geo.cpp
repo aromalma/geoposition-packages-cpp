@@ -2,20 +2,43 @@
 #include<math.h>
 
 #include <pybind11/pybind11.h>
-// namespace py=pybind11::literals;
+
 namespace py =pybind11;
-using namespace std;
+// using namespace std;
+
+class {}
+
+
+
 void split(std::string &, double *,double*);
+double dmstodd(char *);
 py::tuple geo_split(std::string & f){
     double lt,ln;
     split(f,&lt,&ln);
     return py::make_tuple(lt,ln);
 }
+double dmstodd(char *a){
+    double t[3];
+    int j=0,k=0;
+    char temp[8];
+    for(int i=0; a[i]!='\0'; i++,j++){
+        if (a[i]!='.' || k>1){temp[j]=a[i];}
+        else {
+            temp[j]='\0';
+            t[k]=atof(temp);
+            k++;j=-1;
+        }
+    }
+    temp[j]='\0';
+    t[k]=atof(temp);
+    return t[0]+t[1]/60+t[2]/3600;
+}
 void split(std::string & a,double *x,double * y){
     bool ew=false;
+    int dms=0;
     *x=1.0;
     *y=1.0;
-    char lt[12],ln[12];
+    char lt[16],ln[16];
     char *pt1=ln;
     char *pt2=lt;
     for(char &i: a){
@@ -26,6 +49,7 @@ void split(std::string & a,double *x,double * y){
         else if (i==','){ew=true;}
         else if (i==' '){}
         else{
+            if (i=='.'){dms++;}
             if (ew){
                 *pt1=i;pt1++;
             }
@@ -36,9 +60,16 @@ void split(std::string & a,double *x,double * y){
         
     }
     *pt1='\0';*pt2='\0';
-    // cout<<atof(lt)<<"############# "<<ln;
-    *x*=atof(lt);
-    *y*=atof(ln);
+    if (dms <3){
+        *x*=atof(lt);
+        *y*=atof(ln);
+    }
+    else{
+        *x*=dmstodd(lt);
+        *y*=dmstodd(ln);
+    }
+    *x=round(*x * 1000000)/1000000;
+    *y=round(*y * 1000000)/1000000;
 }
 
 double distance(double a1,double b1,double a2,double b2){
