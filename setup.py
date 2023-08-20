@@ -9,7 +9,7 @@ setup(
     name='geo',
     version='0.1',
     author = "Aromal M A",
-    author_email = "",
+    author_email = "aromalma@yahoo.com",
     cmdclass={"build_ext": build_ext},
     ext_modules=[Pybind11Extension('geo', ['geo.cpp'])],
     zip_safe=False,
