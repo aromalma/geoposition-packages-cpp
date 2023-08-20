@@ -2,6 +2,7 @@
 #include<math.h>
 #include<array>
 #include<vector>
+#define PI 3.141592
 #include <pybind11/pybind11.h>
 
 
@@ -11,7 +12,24 @@ namespace py =pybind11;
 void split(std::string &, double *,double*);
 double dmstodd(char *);
 double distance(double a1,double b1,double a2,double b2){
-    return abs(a1-a2)+abs(b1-b2);
+    // return abs(a1-a2)+abs(b1-b2);
+    double da,db,c;
+    a1*=(PI/180);
+    a2*=(PI/180);
+    b1*=(PI/180);
+    b2*=(PI/180);
+    da=a1-a2;
+    db=b1-b2;
+    c =pow(sin(da/2),2)+cos(a1)*cos(b1) * pow(sin(db/2),2);
+    c=2*asin(sqrt(c))*6371;
+    // std::cout<<c;
+    return c;
+
+}
+double calculateDistance(std::string &v1, std::string &v2){
+    double a1,b1,a2,b2;
+    split(v1,&a1,&b1);split(v2,&a2,&b2);
+    return distance(a1,b1,a2,b2);
 }
 class query{
     public:
@@ -120,6 +138,7 @@ PYBIND11_MODULE(geo, m) {
     m.doc() = "geo package"; // optional module docstring
 
     m.def("geo_split", &geo_split, "convet string to tuple");
+    m.def("calculateDistance",&calculateDistance,"distance in km");
     // m.def("mas",&mas);
     py::class_<query>(m,"query")
         .def(py::init<py::list>())
