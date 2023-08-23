@@ -20,10 +20,12 @@ float distance(float a1,float b1,float a2,float b2){
     a2*=(PI/180);
     b1*=(PI/180);
     b2*=(PI/180);
-    da=a1-a2;
-    db=b1-b2;
-    c =pow(sin(da/2),2)+cos(a1)*cos(b1) * pow(sin(db/2),2);
-    c=2*asin(sqrt(c))*6371;
+    da=abs(a1-a2);
+    db=abs(b1-b2);
+    c =pow(sin(da/2),2)+cos(a1)*cos(a2) * pow(sin(db/2),2);
+    // c=2*asin(sqrt(c))*6371;
+    c=2*atan2(sqrt(c),sqrt(1-c))*3;
+
     // std::cout<<c;
     return c;
 
@@ -62,11 +64,10 @@ class query{
     }
     py::list cumil(){
         float d;
-        std::vector<float> a={0};
-        
+        std::vector<float> a((int)this->mas.size(),0);
         for (int i=0;i<(int)this->mas.size()-1;i++){
-           d= distance(this->mas[i][0],this->mas[i][1],this->mas[i+1][0],this->mas[i+1][1]);
-           a.push_back(d+a[i-1]);
+           d = distance(this->mas[i][0],this->mas[i][1],this->mas[i+1][0],this->mas[i+1][1]);
+           a[i+1]=d+a[i];
         }
         return py::cast(a);
     }
