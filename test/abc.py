@@ -1,6 +1,5 @@
 import geo
-t=geo.query([])
-y=t.cumilative()
-y.append(12)
+t=geo.query(["12.912629466672342, 77.4506394945014","12.927971831366207, 77.59911933377509"])
+y=t.cumil()
 print(y)
 
