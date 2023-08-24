@@ -20,8 +20,8 @@ double distance(double a1,double b1,double a2,double b2){
     b2*=(PI/180);
     da=a1-a2;
     db=b1-b2;
-    c =pow(sin(da/2),2)+cos(a1)*cos(b1) * pow(sin(db/2),2);
-    c=2*asin(sqrt(c))*6371;
+    c =pow(sin(da/2),2)+cos(a1)*cos(a2) * pow(sin(db/2),2);
+    c=2*atan2(sqrt(c),sqrt(1-c))*6371;
     // std::cout<<c;
     return c;
 
@@ -57,6 +57,15 @@ class query{
         }
         // std::cout<<(this->mas[0][0])<<" ";
         return py::make_tuple(ind,this->mas[ind][0],this->mas[ind][1]);
+    }
+    py::list cumil(){
+        float d;
+        std::vector<float> a((int)this->mas.size(),0);
+        for (int i=0;i<(int)this->mas.size()-1;i++){
+            d = distance(this->mas[i][0],this->mas[i][1],this->mas[i+1][0],this->mas[i+1][1]);
+            a[i+1]=d+a[i];
+        }
+        return py::cast(a);
     }
 };
 
@@ -98,7 +107,7 @@ void split(std::string & a,double *x,double * y){
     int dms=0;
     *x=1.0;
     *y=1.0;
-    char lt[16],ln[16];
+    char lt[32],ln[32];
     char *pt1=ln;
     char *pt2=lt;
     for(char &i: a){
@@ -142,7 +151,8 @@ PYBIND11_MODULE(geo, m) {
     // m.def("mas",&mas);
     py::class_<query>(m,"query")
         .def(py::init<py::list>())
-        .def("nearest",&query::nearest);
+        .def("nearest",&query::nearest)
+        .def("cumil",&query::cumil);
 }
 
 // int main(){
