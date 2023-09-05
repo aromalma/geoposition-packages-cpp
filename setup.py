@@ -6,7 +6,7 @@ except ImportError:
 # from pybind11.setup_helpers import Pybind11Extension, build_ext
 
 setup(
-    name='Geoposition Package',
+    name='geopac',
     version='0.1',
     author = "Aromal M A",
     author_email = "aromalma@yahoo.com",
