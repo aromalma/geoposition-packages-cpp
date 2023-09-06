@@ -9,11 +9,11 @@
 namespace py =pybind11;
 // using namespace std;
 
-void split(std::string &, double *,double*);
-double dmstodd(char *);
-double distance(double a1,double b1,double a2,double b2){
+void split(std::string &, float *,float*);
+float dmstodd(char *);
+float distance(float a1,float b1,float a2,float b2){
     // return abs(a1-a2)+abs(b1-b2);
-    double da,db,c;
+    float da,db,c;
     a1*=(PI/180);
     a2*=(PI/180);
     b1*=(PI/180);
@@ -26,28 +26,28 @@ double distance(double a1,double b1,double a2,double b2){
     return c;
 
 }
-double calculateDistance(std::string &v1, std::string &v2){
-    double a1,b1,a2,b2;
+float calculateDistance(std::string &v1, std::string &v2){
+    float a1,b1,a2,b2;
     split(v1,&a1,&b1);split(v2,&a2,&b2);
     return distance(a1,b1,a2,b2);
 }
 class query{
     public:
-    std::vector<std::array<double, 2>> mas;
+    std::vector<std::array<float, 2>> mas;
     query(const py::list & abc){
         ;
         for( auto &i:abc){
-            std::array<double,2> a;
+            std::array<float,2> a;
             std::string v =py::cast<std::string >(i);
             split(v,&a[0],&a[1]);
             this->mas.push_back(a);
         }
     }
     py::tuple nearest(std::string & a){
-        double lt,ln,t;
+        float lt,ln,t;
         int ind=0,count=0;
         split(a,&lt,&ln);
-        double min=10000;
+        float min=10000;
         // for (int i=0;i<this->mas.size();i++){
         for(auto &i:this->mas){
             t=distance(i[0],i[1],lt,ln);
@@ -82,15 +82,16 @@ class query{
 
 
 py::tuple geo_split(std::string & f){
-    double lt,ln;
+    float lt,ln;
     split(f,&lt,&ln);
     return py::make_tuple(lt,ln);
 }
-double dmstodd(char *a){
-    double t[3];
-    int j=0,k=0;
+float dmstodd(char *a){
+    float t[3],sign=1;
+    int j=0,k=0,i=0;
     char temp[8];
-    for(int i=0; a[i]!='\0'; i++,j++){
+    if (a[0]!='-'){sign=-1;i=1;}
+    for(; a[i]!='\0'; i++,j++){
         if (a[i]!='.' || k>1){temp[j]=a[i];}
         else {
             temp[j]='\0';
@@ -100,9 +101,9 @@ double dmstodd(char *a){
     }
     temp[j]='\0';
     t[k]=atof(temp);
-    return t[0]+t[1]/60+t[2]/3600;
+    return (t[0]+t[1]/60+t[2]/3600)*sign;
 }
-void split(std::string & a,double *x,double * y){
+void split(std::string & a,float *x,float * y){
     bool ew=false;
     int dms=0;
     *x=1.0;
@@ -156,7 +157,7 @@ PYBIND11_MODULE(geo, m) {
 }
 
 // int main(){
-//     double a1,b1,a2,b2;
+//     float a1,b1,a2,b2;
 //     std::string f1 ="12.345, -45.455";
 //     std::string f2 ="N12.345E15.455";
 //     split(f1,&a1,&b1);
