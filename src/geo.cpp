@@ -87,10 +87,10 @@ py::tuple geo_split(std::string & f){
     return py::make_tuple(lt,ln);
 }
 float dmstodd(char *a){
-    float t[3],sign=1;
+    float t[3],sign=1.0;
     int j=0,k=0,i=0;
     char temp[8];
-    if (a[0]!='-'){sign=-1;i=1;}
+    if (a[0]=='-'){sign=-1.0;i=1;}
     for(; a[i]!='\0'; i++,j++){
         if (a[i]!='.' || k>1){temp[j]=a[i];}
         else {
