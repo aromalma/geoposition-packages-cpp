@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='geopac',
-    version='0.1',
+    version='0.1.1',
     author = "Aromal M A",
     author_email = "aromalma@yahoo.com",
     cmdclass={"build_ext": build_ext},
