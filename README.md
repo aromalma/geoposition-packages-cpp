@@ -7,6 +7,7 @@ published in pypi
 ## Installation
 pip install geopac
 ## Usage
+'''
 import geo
 DISTANCE BETWEEN TWO LATLONGS
 geo.calculateDistance('n23.45567,34.4546','34.5664,22.55')
@@ -26,3 +27,4 @@ c.nearest("n33.450,w45.22.55.11")
 (1, 40.583333, -45.381978)
 c.nearest("-23.471,23.416")
 (2, -23.461, 23.456)
+'''
