@@ -11,6 +11,6 @@ setup(
     author = "Aromal M A",
     author_email = "aromalma@yahoo.com",
     cmdclass={"build_ext": build_ext},
-    ext_modules=[Pybind11Extension('geo', ['src/geo.cpp'])],
+    ext_modules=[Pybind11Extension('geo', ['src/geo.cpp','src/utils.cpp'])],
     zip_safe=False,
 )
