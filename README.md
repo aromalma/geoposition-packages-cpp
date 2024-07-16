@@ -6,7 +6,7 @@ It has several functions for working with geo position latlongs.
 published in pypi
 ## Installation
 pip install geopac
-OR
+Or
 pip install git+https://github.com/aromalma/geoposition-packages-cpp.git
 ## Usage
 ```
